@@ -1,0 +1,22 @@
+# Editor configuration, see https://editorconfig.org
+#
+# Supported nativily in WebStorm, Visual Studio +++ (see https://editorconfig.org/#download)
+# Plugin needed for Visual Studio Code, Atom, +++ (see https://editorconfig.org/#download)
+#
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+quote_type = single
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false
+
+[*.py]
+indent_size = 2
+quote_type = double
