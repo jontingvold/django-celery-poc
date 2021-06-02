@@ -1,3 +1,15 @@
+
+{% if new_person %}
+  <p>Person '{{ new_person }}' added!</p>
+{% endif %}
+
+<form action="add/" method="post">
+  {% csrf_token %}
+  <label for="name">Name</label>
+  <input id="name" type="text" name="name">
+  <input type="submit" value="Add person">
+</form>
+
 <ul>
   {% for person in persons %}
   <li>{{ person.name }}</li>

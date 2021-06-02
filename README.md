@@ -13,21 +13,32 @@ This is a persistent storage system that maintains the task queue even if the se
 
 ## Essential files
 
-For essential files see commit [de02fa2](https://github.com/jontingvold/django-celery-oc/commit/ebe334ca0a12fa65ac385bbbba09c00737c7b2a8).
+For essential files see commit [5af6995](https://github.com/jontingvold/django-celery-poc/commit/5af69952d6fe28b7204bf3081137e01f3aaacc04).
 
 ## Installation and startup of Redis and Celery
 
 #### Install and start Redis (mac)
 
-`brew install redis`
-`brew services start redis`
+`brew install rabbitmq`
+`brew services start rabbitmq`
 
 #### Install Celery
 
-`pip install -U "celery[redis]"`
+`pip install -U "celery[rabbitmq]"`
 
 #### Start Celery
 
-`celery --app=django_celery_poc.celery:app worker --loglevel=INFO`
+Start Django:
+`python manage.py runserver`
+
+Start worker:
+`celery -A django_celery_poc worker`
+
+Start beat worker (can not be more than one):
+`celery -A django_celery_poc beat`
+(Can also be started together with a worker with `celery -A django_celery_poc worker -B`)
+
+To monitor tasks, start Flower:
+`celery -A django_celery_poc flower`
 
 For a production server, Celery should be set up as a service.

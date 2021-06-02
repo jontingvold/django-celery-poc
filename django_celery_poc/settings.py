@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_celery_beat',
+
     'hello_world',
 ]
 
@@ -107,7 +109,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# NB! If you change this you need to reset last_run in Celery Beat, periodic tasks
+# https://django-celery-beat.readthedocs.io/en/latest/#important-warning-about-time-zones
+TIME_ZONE = 'Europe/Oslo'
+CELERY_TIMEZONE=TIME_ZONE
+CELERY_ENABLE_UTC = False
 
 USE_I18N = True
 
@@ -124,7 +130,12 @@ STATIC_URL = '/static/'
 
 # CELERY SETTINGS
 
-BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'amqp://localhost'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ALWAYS_EAGER = False  # Set to True for local debugging without Celery
+# CELERY_WORKER_CONCURRENCY = 2  # Number of works. Defaults to number of CPU. Set higher if tasks are IO-bound.
+CELERYBEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'  # Before v.4.4.1
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler' # After v.4.4.1
+
